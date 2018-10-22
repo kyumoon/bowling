@@ -1,25 +1,26 @@
 import * as React from 'react';
-import scoreStore from '../store/ScoreStore';
-// import * as mobx from 'mobx'
-import { observer } from 'mobx-react'
-// import {number} from "prop-types";
+import {inject, observer} from 'mobx-react'
+import ScoreInput from "./ScoreInput";
 
+@inject('store')
 @observer
 class ScoreBoard extends React.Component<any,any>{
+    scoreStore = this.props.store;
     constructor(props:any){
         super(props);
+        // const scoreStore = this.props.store;
         //임시 테이터생성
-        scoreStore.addScoreList(133);
-        scoreStore.addScoreList(155);
-        scoreStore.addScoreList(143);
-        scoreStore.addScoreList(165);
-        scoreStore.addScoreList(182);
-        scoreStore.addScoreList(177);
+        this.scoreStore.addScoreList(133);
+        this.scoreStore.addScoreList(155);
+        this.scoreStore.addScoreList(143);
+        this.scoreStore.addScoreList(165);
+        this.scoreStore.addScoreList(182);
+        this.scoreStore.addScoreList(177);
     }
 
     public render(){
         let scoreSum = 0;
-        const scoreList = scoreStore.scoreList.map((item:any)=>{
+        const scoreList = this.scoreStore.scoreList.map((item:any)=>{
             scoreSum+=item.score;
             return <li key={item.id}>{item.score}</li>
         });
@@ -32,6 +33,7 @@ class ScoreBoard extends React.Component<any,any>{
                     <li onClick={this.onClick}>7일</li>
                     <li onClick={this.onClick}>한달</li>
                 </ul>
+                <ScoreInput/>
                 <div>Score : {scoreAvg}</div>
                 <ul>
                     {scoreList}
@@ -40,11 +42,10 @@ class ScoreBoard extends React.Component<any,any>{
         );
     }
 
-    onClick(e: any){
+    onClick=(e: any)=>{
         let target = e.target;
-        console.dir(typeof e);
         let gameCount = +target.getAttribute('data-game')||0;
-        scoreStore.setLimit(gameCount);
+        this.scoreStore.setLimit(gameCount);
     }
 }
 
