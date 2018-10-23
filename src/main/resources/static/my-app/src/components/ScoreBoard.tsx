@@ -38,6 +38,7 @@ class ScoreBoard extends React.Component<any,any>{
                 <ul>
                     {scoreList}
                 </ul>
+                <button onClick={this.scoreStore.saveScores}> 저장</button>
             </div>
         );
     }
