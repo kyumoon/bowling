@@ -1,4 +1,5 @@
 import {action, observable} from "mobx";
+import * as React from "react";
 
 interface ScoreObj {
     id:number,
@@ -8,7 +9,6 @@ interface ScoreObj {
 
 class ScoreStore{
     @observable scoreList:Array<ScoreObj>=[];
-    // @observable limit = 0;
     originScoreList:Array<ScoreObj>=[];
 
     @action
@@ -44,7 +44,6 @@ class ScoreStore{
         this.scoreList=[];
     }
 
-    @action
     saveScores = ()=>{
         let newScores:Array<ScoreObj> = this.scoreList.filter((score:ScoreObj)=>{
             return score.isNew;
@@ -73,6 +72,38 @@ class ScoreStore{
         }).then((json:any)=>{
             console.dir(json);
         });
+    }
+
+    @action
+    selectList = ()=>{
+        let request = {
+            method: 'get',
+        }
+        fetch('/score',request).then((response:Response):any=>{
+            if(response.ok){
+                console.log('response 200');
+                return response.json();
+            }else{
+                console.log('response error occured!!');
+            }
+        }).then((json:any)=>{
+            console.dir(json);
+            this.originScoreList = json;
+            this.scoreList = json;
+        });
+    }
+
+    getAvg = ()=>{
+        let scoreSum = 0;
+        if(this.scoreList.length === 0){
+            return;
+        }
+        const scoreList = this.scoreList.map((item:any)=>{
+            scoreSum+=item.score;
+            return <li key={item.id}>{item.score}</li>
+        });
+        let scoreAvg = Math.round(scoreSum/scoreList.length*10)/10;
+        return scoreAvg;
     }
 }
 

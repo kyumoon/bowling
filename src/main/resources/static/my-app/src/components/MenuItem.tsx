@@ -6,8 +6,8 @@ class MenuItem extends React.Component<any,any>{
         super(props);
         this.state = {
             menuList: [
-                {index: 0, name: 'SCORE', url: ''},
-
+                {index: 0, name: 'Score', url: ''},
+                {index: 1, name: 'Statics', url: ''},
             ]
         }
     }
