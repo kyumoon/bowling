@@ -35,13 +35,22 @@ public class ScoreController {
     }
 
     @PostMapping(value = "/score",produces = MediaType.APPLICATION_JSON_VALUE)
-    public void addScore(@RequestBody Score newScores){
+    public void addScore(@RequestBody Score newScores) throws Exception {
         List<Score> scores = newScores.getNewScores();
         if(scores == null){
             return;
         }
         for(Score score : scores){
-            scoreRepository.save(score);
+            switch (score.getCrudType()){
+                case "C": case "U":
+                    scoreRepository.save(score);
+                    break;
+                case "D":
+                    scoreRepository.delete(score);
+                    break;
+                default:
+                    throw new Exception();
+            }
         }
     }
 

@@ -1,6 +1,5 @@
 package com.bowling.bae.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -8,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.Accessors;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Generated;
+import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,14 +24,19 @@ public class Score {
 
     @GeneratedValue
     @Id
-    @JsonProperty(value = "id",access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(value = "id")
     private long scoreNo;
     private int score;
     private boolean isNew;
+    @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date regDate;
 
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<Score> newScores;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    String crudType;
 }

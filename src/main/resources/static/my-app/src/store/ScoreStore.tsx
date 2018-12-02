@@ -4,7 +4,7 @@ import * as React from "react";
 interface ScoreObj {
     id:number,
     score:number,
-    isNew:boolean
+    crudType:String
 }
 
 class ScoreStore{
@@ -12,41 +12,24 @@ class ScoreStore{
     originScoreList:Array<ScoreObj>=[];
 
     @action
-    getScoreList =(limit:number = 0)=>{
-        // console.log(333);
-        let temp = limit === 0 ? this.originScoreList : this.originScoreList.slice(0,limit);
-        return temp;
-    }
-
-    @action
-    getLimitedList = (limit:number)=>{
-        return this.scoreList.slice(0,limit);
-    }
-
-    @action
-    setLimit = (limit:number = 0)=>{
-        this.scoreList = limit === 0 ? this.originScoreList : this.originScoreList.slice(0,limit);
-    }
-
-    @action
     addScoreList = (score:number)=>{
         let newItem = {
             id: new Date().getMilliseconds()+Math.random(),
             score,
-            isNew:true
+            crudType : "C"
         }
         this.originScoreList.push(newItem);
         this.scoreList.push(newItem);
     }
 
     @action
-    resetScoreList = ()=>{
-        this.scoreList=[];
+    removeScore = (score:ScoreObj)=>{
+        score.crudType = 'D';
     }
 
     saveScores = ()=>{
         let newScores:Array<ScoreObj> = this.scoreList.filter((score:ScoreObj)=>{
-            return score.isNew;
+            return score.crudType === 'C' || score.crudType === 'D';
         });
 
         let body = {
@@ -58,7 +41,6 @@ class ScoreStore{
             body : JSON.stringify(body),
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-                // "Content-Type": "application/x-www-form-urlencoded",
             },
         }
         fetch('/score',request).then((response:Response):any=>{
@@ -71,15 +53,16 @@ class ScoreStore{
             }
         }).then((json:any)=>{
             console.dir(json);
+            this.selectList();
         });
     }
 
     @action
-    selectList = ()=>{
+    selectList = (defaultGame = 5)=>{
         let request = {
             method: 'get',
         }
-        fetch('/score',request).then((response:Response):any=>{
+        fetch(`/score/${defaultGame}`,request).then((response:Response):any=>{
             if(response.ok){
                 console.log('response 200');
                 return response.json();
