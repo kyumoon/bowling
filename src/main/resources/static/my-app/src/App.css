@@ -1,8 +1,13 @@
 *{
-  border: 1px solid red;
+  /*border: 1px solid red;*/
   list-style: none;
   padding: 0;
   margin: 0;
+}
+
+nav{
+  background: #6e7f6f;
+  color:#eeede6
 }
 
 nav ul{
@@ -10,7 +15,13 @@ nav ul{
 }
 
 nav li{
-  float:left
+  float:left;
+  cursor:pointer;
+}
+
+li.seperator{
+  border-right: 0.1em solid white;
+  /*margin-right: 0.2em;*/
 }
 
 .floating-left{
@@ -23,6 +34,11 @@ nav li{
 
 nav{
   /*border: 1px solid red;*/
+}
+
+.delete-btn{
+  padding: 0.2em 0.4em;
+  margin: 0 0.4em;
 }
 
 @keyframes App-logo-spin {

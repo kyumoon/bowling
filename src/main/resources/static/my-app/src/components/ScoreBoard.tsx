@@ -1,8 +1,15 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react'
 import ScoreInput from "./ScoreInput";
-// import scoreStore from "../store/ScoreStore";
+import * as moment from 'moment';
 
+
+interface ScoreObj {
+    id:number,
+    score:number,
+    crudType:string,
+    regDate:string
+}
 @inject('store')
 @observer
 class ScoreBoard extends React.Component<any,any>{
@@ -19,14 +26,17 @@ class ScoreBoard extends React.Component<any,any>{
             color:'red'
         }
 
+        let returnDate = (item:ScoreObj)=>{
+            return <span>{moment(item.regDate).format('YYYY-MM-DD HH:mm:ss')}</span>
+        }
+
         const scoreList = this.scoreStore.scoreList.map((item:any)=>{
             scoreSum+=item.score;
-            if(!item.crudType){
-                return <li key={item.id}>{item.score} <button onClick={()=>{  this.scoreStore.removeScore(item);} }>X</button> </li>
-            }else if(item.crudType === 'D'){
-                return <del key={item.id} style={temp}>{item.score}</del>
+            // const date = <span>{item.regDate}</span>;
+            if(item.crudType === 'D'){
+                return <li><del key={item.id} style={temp}>{item.score}</del><button  className={'delete-btn'} onClick={()=>{  this.scoreStore.removeScore(item);} }>Cancle</button>{returnDate(item)}</li>
             }
-            return <li key={item.id}>{item.score}</li>
+            return <li key={item.id}>{item.score}<button  className={'delete-btn'} onClick={()=>{  this.scoreStore.removeScore(item);} }>X</button>{returnDate(item)}</li>
         });
         if(scoreList.length){
             scoreAvg = Math.round(scoreSum/scoreList.length*10)/10;
@@ -36,12 +46,12 @@ class ScoreBoard extends React.Component<any,any>{
                 <ul className="floating-left">
                     <li onClick={this.onClick} data-game={5}>5게임</li>
                     <li onClick={this.onClick} data-game={7}>7게임</li>
-                    <li onClick={this.onClick}>1주일</li>
-                    <li onClick={this.onClick}>2주</li>
-                    <li onClick={this.onClick}>한달</li>
+                    <li onClick={this.onClick} data-game={10}>10게임</li>
+                    <li onClick={this.onClick} data-game={20}>20게임</li>
+                    <li onClick={this.onClick} data-game={30}>30게임</li>
                 </ul>
                 <ScoreInput/>
-                <div>Score : {scoreAvg}</div>
+                <div>Average : {scoreAvg}</div>
                 <ul>
                     {scoreList}
                 </ul>

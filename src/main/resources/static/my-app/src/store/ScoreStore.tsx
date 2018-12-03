@@ -24,7 +24,7 @@ class ScoreStore{
 
     @action
     removeScore = (score:ScoreObj)=>{
-        score.crudType = 'D';
+        score.crudType = score.crudType === 'D' ? '': 'D' ;
     }
 
     saveScores = ()=>{
@@ -32,6 +32,9 @@ class ScoreStore{
             return score.crudType === 'C' || score.crudType === 'D';
         });
 
+        if(newScores.length === 0){
+            alert('저장할 대상이 없습니다.');
+        }
         let body = {
             newScores
         }

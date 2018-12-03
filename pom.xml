@@ -95,7 +95,7 @@
     <build>
         <resources>
             <resource>
-                <directory>src/main/resources/static</directory>
+                <directory>src/main/resources/static/my-app/build</directory>
             </resource>
             <resource>
                 <directory>src/main/resources/${env}</directory>
