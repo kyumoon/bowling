@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Link} from "react-router-dom";
 // import * from 'react-router';
 
 
@@ -15,7 +16,11 @@ class MenuItem extends React.Component<any,any>{
 
     public render() {
         const menuList = this.state.menuList.map((item:any)=>{
-            return <li className={item.index%2==0?'seperator':''} key={item.index}>{item.name}</li>
+            return (
+                <li className={item.index%2==0?'seperator':''} key={item.index}>
+                    <Link to={`/${item.name}`}>{item.name}</Link>
+                </li>
+            )
         });
         return (
             <ul>
