@@ -1,10 +1,12 @@
 import * as React from 'react';
 import './App.css';
-// import ScoreBoard from "./components/ScoreBoard";
-import Navigation from "./components/Navigation";
 import scoreStore from './store/ScoreStore';
 import {Provider} from "mobx-react";
-// import ScoreBoard from "./components/ScoreBoard";
+import ScoreBoard from "./components/ScoreBoard";
+import createBrowserHistory from "history/createBrowserHistory";
+import Navigation from "./components/Navigation";
+import {Route, Router} from "react-router";
+import Statics from "./components/Statics";
 
 // import logo from './logo.svg';
 
@@ -12,12 +14,18 @@ class App extends React.Component {
 
   public render() {
       return (
-      <div className="App">테스트
-        <Navigation/>
+      <div className="App">
           <Provider store={scoreStore}>
-            {/*<ScoreBoard/>/!*추후 라우터로 변경*!/*/}
-              {this.props.children}
+          <Router history={createBrowserHistory()}>
+              <div>
+                  <Navigation/>
+                  <Route path="/" exact component={ScoreBoard} />
+                  <Route path="/Statics" exact component={Statics} />
+              </div>
+          </Router>
           </Provider>
+
+
       </div>
     );
   }

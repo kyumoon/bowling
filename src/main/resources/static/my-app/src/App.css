@@ -5,6 +5,10 @@
   margin: 0;
 }
 
+a{
+  text-decoration: none;
+}
+
 nav{
   background: #6e7f6f;
   color:#eeede6
@@ -17,6 +21,10 @@ nav ul{
 nav li{
   float:left;
   cursor:pointer;
+}
+
+nav li a{
+  color:white;
 }
 
 li.seperator{
